@@ -5,7 +5,8 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
     public GameObject player;
-    public float cameraDistance = 10.0f;
+    public float cameraDistance;
+    public float cameraHeight;
 
     // Use this for initialization
     void Start()
@@ -16,6 +17,6 @@ public class CameraController : MonoBehaviour
     {
         transform.position = player.transform.position - player.transform.forward * cameraDistance;
         transform.LookAt(player.transform.position);
-        transform.position = new Vector3(transform.position.x, transform.position.y + 4.20f, transform.position.z);
+        transform.position = new Vector3(transform.position.x, transform.position.y + cameraHeight, transform.position.z);
     }
 }
