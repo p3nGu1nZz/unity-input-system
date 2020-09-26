@@ -6,16 +6,19 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     // Editor
-    [SerializeField] private float moveForce = 10;
-    [SerializeField] private float jumpVelocity = 500;
+    [SerializeField] private float moveForce;
+    [SerializeField] private float rotateForce;
+    [SerializeField] private float jumpForce;
 
     // Variables
     private PlayerBaseState currentState;
     private InputSystemControls controls;
     private Rigidbody rb;
     private Vector3 moveVector;
+    private Vector3 rotateVector;
 
-    // Getters
+    #region Getters
+
     public InputSystemControls Controls
     {
         get { return controls; }
@@ -31,10 +34,15 @@ public class PlayerController : MonoBehaviour
         get { return currentState; }
     }
 
-    // States
+    #endregion
+
+    #region States
+
     public readonly PlayerIdleState IdleState = new PlayerIdleState();
     public readonly PlayerJumpingState JumpingState = new PlayerJumpingState();
     public readonly PlayerWalkingState WalkingState = new PlayerWalkingState();
+
+    #endregion
 
     public void Awake()
     {
@@ -83,12 +91,12 @@ public class PlayerController : MonoBehaviour
     public void Jump()
     {
         Debug.Log("JUMP!");
-        rb.AddForce(transform.up * jumpVelocity, ForceMode.Force);
+        rb.AddForce(transform.up * jumpForce, ForceMode.Force);
     }
 
     public void Move(Vector3 direction)
     {
-        moveVector = new Vector3(direction.x * 10f, 0f, direction.y * 10f);
+        moveVector = new Vector3(direction.x, 0f, direction.y);
         moveVector *= moveForce;
         transform.LookAt(transform.position + moveVector);
         rb.AddForce(moveVector, ForceMode.Force);

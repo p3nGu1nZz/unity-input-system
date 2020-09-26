@@ -23,6 +23,10 @@ public class PlayerWalkingState : PlayerBaseState
         {
             player.Move(direction);
         }
+        else if (player.Rigidbody.velocity.magnitude == 0)
+        {
+            player.TransitionToState(player.IdleState);
+        }
     }
 
     public override void Update(PlayerController player)

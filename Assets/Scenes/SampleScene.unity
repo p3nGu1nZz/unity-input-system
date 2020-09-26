@@ -487,8 +487,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfe89d73c28a046f4ac68f2b219d6cbd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveForce: 1
-  jumpVelocity: 10
+  moveForce: 20
+  rotateForce: 20
+  jumpForce: 250
 --- !u!65 &1895396183
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -575,9 +576,9 @@ Rigidbody:
   serializedVersion: 2
   m_Mass: 1
   m_Drag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 0.25
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 32
   m_CollisionDetection: 0
