@@ -5,10 +5,11 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
+    #region Declarations
+
     // Editor
-    [SerializeField] private float moveForce;
-    [SerializeField] private float rotateForce;
-    [SerializeField] private float jumpForce;
+    [SerializeField] private float moveForce = 1;
+    [SerializeField] private float jumpForce = 1;
 
     // Variables
     private PlayerBaseState currentState;
@@ -16,6 +17,8 @@ public class PlayerController : MonoBehaviour
     private Rigidbody rb;
     private Vector3 moveVector;
     private Vector3 rotateVector;
+
+    #endregion
 
     #region Getters
 
@@ -86,9 +89,10 @@ public class PlayerController : MonoBehaviour
         controls.Disable();
     }
 
+    #region Controls
+
     public void Jump()
     {
-        Debug.Log("JUMP!");
         rb.AddForce(transform.up * jumpForce, ForceMode.Force);
     }
 
@@ -99,4 +103,6 @@ public class PlayerController : MonoBehaviour
         transform.LookAt(transform.position + Vector3.forward);
         rb.AddForce(moveVector, ForceMode.Force);
     }
+
+    #endregion
 }
