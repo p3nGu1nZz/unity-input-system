@@ -48,8 +48,6 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         controls = new InputSystemControls();
-
-        //rb.freezeRotation = true;
     }
 
     private void Start()
@@ -96,7 +94,7 @@ public class PlayerController : MonoBehaviour
 
     public void Move(Vector3 direction)
     {
-        moveVector = new Vector3(direction.x, 0f, direction.y);
+        moveVector = new Vector3(0f, 0f, direction.y);
         moveVector *= moveForce;
         transform.LookAt(transform.position + moveVector);
         rb.AddForce(moveVector, ForceMode.Force);

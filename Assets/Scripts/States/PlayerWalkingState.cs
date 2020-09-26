@@ -27,6 +27,7 @@ public class PlayerWalkingState : PlayerBaseState
         {
             player.TransitionToState(player.IdleState);
         }
+
     }
 
     public override void Update(PlayerController player)
@@ -34,6 +35,10 @@ public class PlayerWalkingState : PlayerBaseState
         if (player.Controls.Player.Jump.triggered)
         {
             player.TransitionToState(player.JumpingState);
+        }
+        else
+        {
+
         }
     }
 }
