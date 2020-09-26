@@ -5,38 +5,69 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
+    // Editor
+    [SerializeField] private float moveForce = 10;
+    [SerializeField] private float jumpVelocity = 500;
 
-    public InputSystemControls controls;
+    // Variables
+    private PlayerBaseState currentState;
+    private InputSystemControls controls;
     private Rigidbody rb;
-    [SerializeField] private float velocity;
+    private Vector3 moveVector;
+
+    // Getters
+    public InputSystemControls Controls
+    {
+        get { return controls; }
+    }
+
+    public Rigidbody Rigidbody
+    {
+        get { return rb; }
+    }
+
+    public PlayerBaseState CurrentState
+    {
+        get { return currentState; }
+    }
+
+    // States
+    public readonly PlayerIdleState IdleState = new PlayerIdleState();
+    public readonly PlayerJumpingState JumpingState = new PlayerJumpingState();
+    public readonly PlayerWalkingState WalkingState = new PlayerWalkingState();
 
     public void Awake()
     {
         rb = GetComponent<Rigidbody>();
         controls = new InputSystemControls();
-        controls.Player.Jump.performed += _ => Jump();
-        controls.Player.Movement.performed += _ => Move(_.ReadValue<Vector2>());
+
+        //rb.freezeRotation = true;
+    }
+
+    private void Start()
+    {
+        TransitionToState(IdleState);
     }
 
     private void Update()
     {
-
-        Keyboard keyboard = InputSystem.GetDevice<Keyboard>();
-        if (keyboard.spaceKey.isPressed)
-        {
-            Debug.Log("CHARGING");
-        }
+        currentState.Update(this);
     }
 
-    void Move(Vector2 direction)
+    private void FixedUpdate()
     {
-        Debug.Log("Move Player:" + direction);
+        currentState.FixedUpdate(this);
     }
 
-    void Jump()
+    private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log("Jump!");
-        rb.AddForce(0f, 1f, 0f);
+        currentState.OnCollisionEnter(this, collision);
+    }
+
+    public void TransitionToState(PlayerBaseState state)
+    {
+        currentState = state;
+        currentState.EnterState(this);
     }
 
     private void OnEnable()
@@ -47,5 +78,19 @@ public class PlayerController : MonoBehaviour
     private void OnDisable()
     {
         controls.Disable();
+    }
+
+    public void Jump()
+    {
+        Debug.Log("JUMP!");
+        rb.AddForce(transform.up * jumpVelocity, ForceMode.Force);
+    }
+
+    public void Move(Vector3 direction)
+    {
+        moveVector = new Vector3(direction.x * 10f, 0f, direction.y * 10f);
+        moveVector *= moveForce;
+        transform.LookAt(transform.position + moveVector);
+        rb.AddForce(moveVector, ForceMode.Force);
     }
 }
