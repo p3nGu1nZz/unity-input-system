@@ -96,7 +96,7 @@ public class PlayerController : MonoBehaviour
     {
         moveVector = new Vector3(0f, 0f, direction.y);
         moveVector *= moveForce;
-        transform.LookAt(transform.position + moveVector);
+        //transform.LookAt(transform.position + moveVector);
         rb.AddForce(moveVector, ForceMode.Force);
     }
 }
