@@ -17,6 +17,11 @@ public class PlayerJumpingState : PlayerBaseState
             Debug.Log("Landed On Floor");
             player.TransitionToState(player.IdleState);
         }
+        else if (collision.gameObject.tag == "Landable")
+        {
+            Debug.Log("Landed On Landable");
+            player.TransitionToState(player.IdleState);
+        }
     }
 
     public override void FixedUpdate(PlayerController player)

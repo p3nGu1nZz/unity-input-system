@@ -93,7 +93,7 @@ public class PlayerController : MonoBehaviour
 
     public void Jump()
     {
-        rb.AddForce(transform.up * jumpForce, ForceMode.Force);
+        rb.AddForce(transform.up * jumpForce, ForceMode.Acceleration);
     }
 
     public void Move(Vector3 direction)
