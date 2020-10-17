@@ -12,18 +12,12 @@ public class PlayerController : MonoBehaviour
     // Variables
     private PlayerBaseState currentState;
     private InputSystemControls controls;
-    private GameTimeController gameTime;
     private Rigidbody rb;
     private Vector3 moveVector;
 
     public InputSystemControls Controls
     {
         get { return controls; }
-    }
-
-    public GameTimeController GameTime
-    {
-        get { return gameTime; }
     }
 
     public Rigidbody Rigidbody
@@ -44,7 +38,6 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         controls = new InputSystemControls();
-        gameTime = new GameTimeController();
     }
 
     private void Start()
@@ -64,7 +57,6 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        gameTime.Update(this);
         currentState.Update(this);
     }
 
