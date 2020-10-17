@@ -41,6 +41,11 @@ public class CameraController : MonoBehaviour
         Cursor.visible = false;
     }
 
+    /**
+     * Reads our mouse input or right controller stick to look. This happens during the
+     * update because we are technically not moving a rigidody with this. This moves the 
+     * head which directs the rotational angle to move towards.
+     */
     private void Update()
     {
         direction = player.Controls.Player.Look.ReadValue<Vector2>();
