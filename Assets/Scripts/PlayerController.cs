@@ -6,19 +6,24 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     // Editor
-    [SerializeField] private float moveForce = 1;
-    [SerializeField] private float jumpForce = 1;
+    [SerializeField] private float moveForce = 20;
+    [SerializeField] private float jumpForce = 666;
 
     // Variables
     private PlayerBaseState currentState;
     private InputSystemControls controls;
+    private GameTimeController gameTime;
     private Rigidbody rb;
     private Vector3 moveVector;
-    private Vector3 rotateVector;
 
     public InputSystemControls Controls
     {
         get { return controls; }
+    }
+
+    public GameTimeController GameTime
+    {
+        get { return gameTime; }
     }
 
     public Rigidbody Rigidbody
@@ -39,16 +44,12 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         controls = new InputSystemControls();
+        gameTime = new GameTimeController();
     }
 
     private void Start()
     {
         TransitionToState(IdleState);
-    }
-
-    private void Update()
-    {
-        currentState.Update(this);
     }
 
     private void FixedUpdate()
@@ -59,6 +60,12 @@ public class PlayerController : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         currentState.OnCollisionEnter(this, collision);
+    }
+
+    private void Update()
+    {
+        gameTime.Update(this);
+        currentState.Update(this);
     }
 
     public void TransitionToState(PlayerBaseState state)
@@ -84,6 +91,7 @@ public class PlayerController : MonoBehaviour
 
     public void Move(Vector3 direction)
     {
+        // old - replace with new algo
         moveVector = new Vector3(0f, 0f, direction.y);
         moveVector *= moveForce;
         transform.LookAt(transform.position + Vector3.forward);

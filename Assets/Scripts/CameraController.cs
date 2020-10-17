@@ -46,7 +46,7 @@ public class CameraController : MonoBehaviour
      * update because we are technically not moving a rigidody with this. This moves the 
      * head which directs the rotational angle to move towards.
      */
-    private void Update()
+    private void LateUpdate()
     {
         direction = player.Controls.Player.Look.ReadValue<Vector2>();
         this.Look(direction);
