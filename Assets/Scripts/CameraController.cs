@@ -3,21 +3,25 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Camera))]
+[RequireComponent(typeof(PlayerController))]
 public class CameraController : MonoBehaviour
 {
     public static CameraController cam;
     private Camera cam_;
 
-    //public Transform player;
     public Transform CameraPosition;
-    public float sensitivity = 3;
+    public float sensitivity = 5;
     public float maxUpAngle = 80;
     public float maxDownAngle = -80;
 
     [HideInInspector]
-    public float mouseX, mouseY;
+    public float lookX, lookY;
     private Vector2 direction;
     private PlayerController player;
+
+    private float rotX = 0.0f, rotY = 0.0f;
+    [HideInInspector]
+    public float rotZ = 0.0f;
 
     private void Awake()
     {
@@ -29,46 +33,31 @@ public class CameraController : MonoBehaviour
 
         player = FindObjectOfType<PlayerController>();
 
+        Debug.Log(player);
     }
-
-    private float rotX = 0.0f, rotY = 0.0f;
-    [HideInInspector]
-    public float rotZ = 0.0f;
 
     private void Update()
     {
-        // Mouse input
-        //mouseX = Input.GetAxis("Mouse X") * sensitivity;
-        //mouseY = Input.GetAxis("Mouse Y") * sensitivity;
-
-        // TODO need to add mouse input for looking too.
-
-        // BUG uses the wrong stick to look.
-
-        //new input system
         direction = player.Controls.Player.Look.ReadValue<Vector2>();
+        this.Look(direction);
+    }
 
-        Debug.Log(direction);
+    /**
+     * Calculates the new direction for the player to look at. This is independent of 
+     * the player states. We assume that we always want the player to be looking around
+     * unless this state is disabled for a cut scene or something.
+     */
+    public void Look(Vector3 direction)
+    {
+        lookX = direction.x * sensitivity;
+        lookY = direction.y * sensitivity;
 
-        if (direction.x > 0 || direction.x < 0 || direction.y > 0 || direction.y < 0)
-        {
-            //player.Move(direction);
-
-            mouseX = direction.x * sensitivity;
-            mouseY = direction.y * sensitivity;
-
-            // need to implement
-            // player.Look(direction)
-        }
-
-        // Calculations
-        rotX -= mouseY;
+        rotX -= lookY;
         rotX = Mathf.Clamp(rotX, maxDownAngle, maxUpAngle);
-        rotY += mouseX;
+        rotY += lookX;
 
-        // Placing values
         transform.localRotation = Quaternion.Euler(rotX, rotY, rotZ);
-        player.transform.Rotate(Vector3.up * mouseX);
+        player.transform.Rotate(Vector3.up * lookX);
         transform.position = CameraPosition.position;
     }
 
