@@ -23,6 +23,10 @@ public class CameraController : MonoBehaviour
     [HideInInspector]
     public float rotZ = 0.0f;
 
+    /**
+     * Grab an instance of the camera which should be attached to this game object
+     * Then we need to lock the cursor to the center of the screeb
+     */
     private void Awake()
     {
         cam = this;
