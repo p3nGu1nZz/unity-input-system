@@ -104,5 +104,10 @@ public class PlayerController : MonoBehaviour
         rb.AddForce(moveVector, ForceMode.Force);
     }
 
+    public void Look(Vector3 direction)
+    {
+
+    }
+
     #endregion
 }
