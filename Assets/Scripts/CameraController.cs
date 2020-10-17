@@ -8,16 +8,16 @@ public class CameraController : MonoBehaviour
 {
     public static CameraController cam;
     private Camera cam_;
+    private PlayerController player;
 
     public Transform CameraPosition;
     public float sensitivity = 5;
-    public float maxUpAngle = 80;
-    public float maxDownAngle = -80;
+    public float maxRotX = 80;
+    public float minRotX = -80;
 
     [HideInInspector]
     public float lookX, lookY;
     private Vector2 direction;
-    private PlayerController player;
 
     private float rotX = 0.0f, rotY = 0.0f;
     [HideInInspector]
@@ -32,12 +32,13 @@ public class CameraController : MonoBehaviour
         cam = this;
         cam_ = this.GetComponent<Camera>();
 
+        player = FindObjectOfType<PlayerController>();
+    }
+
+    private void Start()
+    {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-
-        player = FindObjectOfType<PlayerController>();
-
-        Debug.Log(player);
     }
 
     private void Update()
@@ -57,7 +58,7 @@ public class CameraController : MonoBehaviour
         lookY = direction.y * sensitivity;
 
         rotX -= lookY;
-        rotX = Mathf.Clamp(rotX, maxDownAngle, maxUpAngle);
+        rotX = Mathf.Clamp(rotX, minRotX, maxRotX);
         rotY += lookX;
 
         transform.localRotation = Quaternion.Euler(rotX, rotY, rotZ);
