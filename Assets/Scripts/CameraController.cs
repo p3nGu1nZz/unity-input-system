@@ -43,10 +43,13 @@ public class CameraController : MonoBehaviour
     /**
      * Reads our mouse input or right controller stick to look. This happens during the
      * update because we are technically not moving a rigidody with this. This moves the 
-     * head which directs the rotational angle to move towards.
+     * head which directs the rotational angle to move towards. Also check to see if we 
+     * are paused, if not then look toward the mouse movement.
      */
     private void LateUpdate()
     {
+        if (GameManager.IsGamePaused) return;
+
         direction = player.Controls.Player.Look.ReadValue<Vector2>();
         this.Look(direction);
     }

@@ -6,6 +6,8 @@ public class GameManager : MonoBehaviour
     private static PlayerController player;
     private GameEvent pauseGameEvent;
     private UnityAction gamePauseListener;
+    private GUIStyle pausedStyle;
+    private string pausedText = "PAUSED";
     private static bool isGamePaused = false;
     public static bool IsGamePaused
     {
@@ -69,17 +71,45 @@ public class GameManager : MonoBehaviour
     {
         if (IsGamePaused)
         {
-            Time.timeScale = 1.0f;
-            AudioListener.pause = false;
-            isGamePaused = !isGamePaused;
-            Debug.Log("Game Unpaused");
+            GameResume();
         }
         else
         {
-            Time.timeScale = 0f;
-            AudioListener.pause = true;
-            isGamePaused = !isGamePaused;
-            Debug.Log("Game Paused");
+            GamePause();
         }
+    }
+
+    void GameResume()
+    {
+        Debug.Log("RESUME");
+        isGamePaused = false;
+        Time.timeScale = 1.0f;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
+    }
+
+    void GamePause()
+    {
+        Debug.Log("PAUSE");
+        isGamePaused = true;
+        Time.timeScale = 0f;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
+    }
+
+    private void OnGUI()
+    {
+        if (IsGamePaused)
+            DrawPauseMenu();
+    }
+
+    private void DrawPauseMenu()
+    {
+        pausedStyle = GUI.skin.GetStyle("Label");
+        pausedStyle.alignment = TextAnchor.UpperCenter;
+        pausedStyle.fontSize = 42;
+        GUI.Label(new Rect(Screen.width / 2 - 50, Screen.height / 2 - 25, 200, 50), pausedText, pausedStyle);
     }
 }
