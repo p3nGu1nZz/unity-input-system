@@ -1,12 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Events;
 
 public class GameManager : MonoBehaviour
 {
     private static PlayerController player;
-    private EventManager.GameEvent pauseGameEvent;
+    private GameEvent pauseGameEvent;
     private UnityAction gamePauseListener;
     private static bool isGamePaused = false;
     public static bool IsGamePaused
@@ -44,9 +42,7 @@ public class GameManager : MonoBehaviour
     {
         gamePauseListener = new UnityAction(PauseGame);
         player = FindObjectOfType<PlayerController>();
-
-        pauseGameEvent = EventManager.Factory.Create(
-            EventManager.EventNames.GAME_PAUSE, gamePauseListener);
+        pauseGameEvent = EventFactory.Create(EventNames.GAME_PAUSE, gamePauseListener);
     }
 
     private void Awake()

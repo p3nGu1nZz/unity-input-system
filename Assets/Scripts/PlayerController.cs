@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.InputSystem;
+﻿using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
@@ -59,7 +56,7 @@ public class PlayerController : MonoBehaviour
     {
         if (controls.Player.Pause.triggered)
         {
-            EventManager.TriggerEvent(EventManager.EventNames.GAME_PAUSE.ToString());
+            EventManager.TriggerEvent(EventNames.GAME_PAUSE.ToString());
         }
 
         if (!GameManager.IsGamePaused)
