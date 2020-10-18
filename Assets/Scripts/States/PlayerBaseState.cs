@@ -2,6 +2,8 @@
 
 public abstract class PlayerBaseState
 {
+    private GameManager gameManager;
+
     public abstract void EnterState(PlayerController player);
 
     public abstract void Update(PlayerController player);

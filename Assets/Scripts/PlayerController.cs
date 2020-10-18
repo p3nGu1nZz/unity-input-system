@@ -57,7 +57,15 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        currentState.Update(this);
+        if (controls.Player.Pause.triggered)
+        {
+            EventManager.TriggerEvent(EventManager.EventNames.GAME_PAUSE.ToString());
+        }
+
+        if (!GameManager.IsGamePaused)
+        {
+            currentState.Update(this);
+        }
     }
 
     public void TransitionToState(PlayerBaseState state)

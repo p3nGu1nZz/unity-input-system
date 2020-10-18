@@ -1,10 +1,45 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
 public class EventManager : MonoBehaviour
 {
+    public class GameEvent
+    {
+        public string Name { get; set; }
+        public UnityAction Action { get; set; }
+        public GameEvent(EventNames name, UnityAction action)
+        {
+            Name = name.ToString();
+            Action = action;
+        }
+
+        public void Start()
+        {
+            StartListening(Name, Action);
+        }
+
+        public void Stop()
+        {
+            StartListening(Name, Action);
+        }
+
+        public void Trigger()
+        {
+            TriggerEvent(Name);
+        }
+    }
+
+    public class Factory
+    {
+        public static GameEvent Create(EventNames name, UnityAction action)
+        {
+            return new GameEvent(name, action);
+        }
+    }
+
     private Dictionary<string, UnityEvent> eventDictionary;
 
     private static EventManager eventManager;
@@ -73,5 +108,10 @@ public class EventManager : MonoBehaviour
         {
             thisEvent.Invoke();
         }
+    }
+
+    public enum EventNames
+    {
+        GAME_PAUSE = 0
     }
 }

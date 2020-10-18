@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Camera))]
-[RequireComponent(typeof(PlayerController))]
 public class CameraController : MonoBehaviour
 {
     public static CameraController cam;
