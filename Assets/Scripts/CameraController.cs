@@ -2,6 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/**
+ * The class that is used to controll the movement of the camera in relation to
+ * the player. This is not tightly coupled to the player controller for
+ * extensibility. Future work on this class will include management and
+ * integration of the unity cinemachine system. This should clear up some of the 
+ * bugs which manually positioning the camera creates.
+ * 
+ * <remarks>requires 'Camera' component to work; make sure one is included in scene</remarks>
+ */
 [RequireComponent(typeof(Camera))]
 public class CameraController : MonoBehaviour
 {
@@ -9,18 +18,15 @@ public class CameraController : MonoBehaviour
     private Camera cam_;
     private PlayerController player;
 
-    public Transform CameraPosition;
-    public float sensitivity = 5;
-    public float maxRotX = 80;
-    public float minRotX = -80;
+    [SerializeField] private Transform CameraPosition;
+    [SerializeField] private float sensitivity = 2;
+    [SerializeField] private float maxRotX = 80;
+    [SerializeField] private float minRotX = -80;
 
-    [HideInInspector]
-    public float lookX, lookY;
+    private float lookX, lookY;
     private Vector2 direction;
-
     private float rotX = 0.0f, rotY = 0.0f;
-    [HideInInspector]
-    public float rotZ = 0.0f;
+    private float rotZ = 0.0f;
 
     /**
      * Grab an instance of the camera which should be attached to this game object
@@ -58,6 +64,8 @@ public class CameraController : MonoBehaviour
      * Calculates the new direction for the player to look at. This is independent of 
      * the player states. We assume that we always want the player to be looking around
      * unless this state is disabled for a cut scene or something.
+     * 
+     * <param name="direction">used internally to denote the vector look position</param>
      */
     public void Look(Vector3 direction)
     {
@@ -77,6 +85,9 @@ public class CameraController : MonoBehaviour
      * This can be called anytime during the update method. This function
      * will wait until the end of the frame, while adding a small random 
      * increment or decrement. 
+     * 
+     * <param name="magnitude">the amount of force to shake the camera</param>
+     * <param name="duration">the length in unscaled time to shake for</param>
      */
     public void ShakeCamera(float magnitude, float duration)
     {
@@ -85,15 +96,18 @@ public class CameraController : MonoBehaviour
 
     /**
      * Runs a loop to randomly shake the camera z axis every frame for the 
-     * given duration. Can be called multiple times. be careful young skywalk
+     * given duration. Can be called multiple times. be careful young skywalker
+     * 
+     * <param name="magnitude">the amount of force used in calculation</param>
+     * <param name="duration">the length in time used by the algorithm</param>
      */
-    private IEnumerator ICameraShaker(float mag, float dur)
+    private IEnumerator ICameraShaker(float magnitude, float duration)
     {
-        WaitForEndOfFrame wfeof = new WaitForEndOfFrame();
-        for (float t = 0.0f; t <= dur; t += Time.deltaTime)
+        WaitForEndOfFrame wait = new WaitForEndOfFrame();
+        for (float t = 0.0f; t <= duration; t += Time.deltaTime)
         {
-            rotZ = Random.Range(-mag, mag) * (t / dur - 1.0f);
-            yield return wfeof;
+            rotZ = Random.Range(-magnitude, magnitude) * (t / duration - 1.0f);
+            yield return wait;
         }
         rotZ = 0.0f;
     }

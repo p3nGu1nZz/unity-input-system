@@ -1,14 +1,23 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
 
+/**
+ * The root manager which controls the game. This interacts with the player controller
+ * and also manages paused events.
+ */
 public class GameManager : MonoBehaviour
 {
+    private static GameManager gameManager;
     private static PlayerController player;
     private GameEvent pauseGameEvent;
     private UnityAction gamePauseListener;
     private GUIStyle pausedStyle;
     private string pausedText = "PAUSED";
     private static bool isGamePaused = false;
+
+    /**
+     * helper function which returns the paused state of the game
+     */
     public static bool IsGamePaused
     {
         get
@@ -17,7 +26,10 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private static GameManager gameManager;
+    /**
+     * grabs a local instance of the game manager class. If it exists then do
+     * not bother looking up. required for when you switch scenes
+     */
     public static GameManager instance
     {
         get
@@ -40,6 +52,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    /**
+     * initiliazes our game by creating a new event listener to detect if the 
+     * game is paused. This also locates the player controller with a simple
+     * find call.
+     */
     void Init()
     {
         gamePauseListener = new UnityAction(PauseGame);
@@ -67,6 +84,9 @@ public class GameManager : MonoBehaviour
         pauseGameEvent.Trigger();
     }
 
+    /**
+     * the check function that determines if we should pause the game or not
+     */
     void PauseGame()
     {
         if (IsGamePaused)
@@ -79,6 +99,9 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    /**
+     * resumes the game and sets various game properties of this manager
+     */
     void GameResume()
     {
         Debug.Log("RESUME");
@@ -89,6 +112,11 @@ public class GameManager : MonoBehaviour
 
     }
 
+    /**
+     * Pauses the game and unlocks the cursor so that you can click around on
+     * your computer. This is a bit wonky inside the unity editor, but seems
+     * to be fine in the release version
+     */
     void GamePause()
     {
         Debug.Log("PAUSE");
@@ -99,12 +127,19 @@ public class GameManager : MonoBehaviour
 
     }
 
+    /**
+     * unity lifecycle hook which calls the function that actually draws the 
+     * gui
+     */
     private void OnGUI()
     {
         if (IsGamePaused)
             DrawPauseMenu();
     }
 
+    /**
+     * draws a simple pause menu, by placing some text into the middle of the screen
+     */
     private void DrawPauseMenu()
     {
         pausedStyle = GUI.skin.GetStyle("Label");

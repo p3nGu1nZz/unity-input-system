@@ -886,9 +886,6 @@ MonoBehaviour:
   sensitivity: 3
   maxRotX: 80
   minRotX: -80
-  lookX: 0
-  lookY: 0
-  rotZ: 0
 --- !u!1 &979595241
 GameObject:
   m_ObjectHideFlags: 0
