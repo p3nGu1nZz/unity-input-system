@@ -19,11 +19,14 @@ public class CameraController : MonoBehaviour
     private PlayerController player;
 
     [SerializeField] private Transform CameraPosition;
-    [SerializeField] private float sensitivity = 2;
+    [SerializeField] private bool enablePlayerRotation;
+    [SerializeField] [Tooltip("Disable for quadruped players")] private float sensitivity = 2;
     [SerializeField] private float maxRotX = 80;
     [SerializeField] private float minRotX = -80;
+    [SerializeField] private float lookSpeed = 0.420f;
 
     private float lookX, lookY;
+    private Transform lookFrom, lookTo;
     private Vector2 direction;
     private float rotX = 0.0f, rotY = 0.0f;
     private float rotZ = 0.0f;
@@ -36,7 +39,6 @@ public class CameraController : MonoBehaviour
     {
         cam = this;
         cam_ = this.GetComponent<Camera>();
-
         player = FindObjectOfType<PlayerController>();
     }
 
@@ -65,6 +67,8 @@ public class CameraController : MonoBehaviour
      * the player states. We assume that we always want the player to be looking around
      * unless this state is disabled for a cut scene or something.
      * 
+     * TODO boolean toggle for allowing the camera to rotate the player -- for quadped
+     * 
      * <param name="direction">used internally to denote the vector look position</param>
      */
     public void Look(Vector3 direction)
@@ -77,7 +81,11 @@ public class CameraController : MonoBehaviour
         rotY += lookX;
 
         transform.localRotation = Quaternion.Euler(rotX, rotY, rotZ);
-        player.transform.Rotate(Vector3.up * lookX);
+
+        if(enablePlayerRotation)
+            player.transform.Rotate(Vector3.up * lookX);
+
+        // do this last
         transform.position = CameraPosition.position;
     }
 
