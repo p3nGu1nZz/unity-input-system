@@ -28,7 +28,7 @@ public class CameraController : MonoBehaviour
     [SerializeField] private float sensitivity = 2;
 
     private Transform lookFrom, lookTo;
-    private float lookX, lookY;
+    private float lookY, lookX;
     private Vector2 direction;
     private float rotX = 0.0f, rotY = 0.0f, rotZ = 0.0f;
 
@@ -66,7 +66,8 @@ public class CameraController : MonoBehaviour
     /**
      * Calculates the new direction for the player to look at. This is independent of 
      * the player states. We assume that we always want the player to be looking around
-     * unless this state is disabled for a cut scene or something.
+     * unless this state is disabled for a cut scene or something. Make sure to update
+     * the camera position last to reduce jitter.
      * 
      * TODO boolean toggle for allowing the camera to rotate the player -- for quadped
      * 
@@ -74,19 +75,18 @@ public class CameraController : MonoBehaviour
      */
     public void Look(Vector3 direction)
     {
-        lookX = direction.x * sensitivity;
-        lookY = direction.y * sensitivity;
+        lookY = direction.x * sensitivity;
+        lookX = direction.y * sensitivity;
 
-        rotX -= lookY;
+        rotX -= lookX;
         rotX = Mathf.Clamp(rotX, minRotX, maxRotX);
-        rotY += lookX;
+        rotY += lookY;
 
         transform.localRotation = Quaternion.Euler(rotX, rotY, rotZ);
 
         if (enablePlayerRotation)
-            player.transform.Rotate(Vector3.up * lookX);
+            player.transform.Rotate(Vector3.up * lookY);
 
-        // update last
         transform.position = CameraPosition.position;
     }
 
