@@ -884,11 +884,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CameraPosition: {fileID: 1824861341}
-  enablePlayerRotation: 0
-  sensitivity: 3
+  enablePlayerRotation: 1
+  lookSpeed: 2
   maxRotX: 80
   minRotX: -80
-  lookSpeed: 0.42
+  sensitivity: 3
 --- !u!1 &979595241
 GameObject:
   m_ObjectHideFlags: 0
