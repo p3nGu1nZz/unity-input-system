@@ -19,17 +19,18 @@ public class CameraController : MonoBehaviour
     private PlayerController player;
 
     [SerializeField] private Transform CameraPosition;
-    [SerializeField] private bool enablePlayerRotation;
-    [SerializeField] [Tooltip("Disable for quadruped players")] private float sensitivity = 2;
+    [SerializeField]
+    [Tooltip("Disable transform rotation for quadruped players, and enable for FPS")]
+    private bool enablePlayerRotation = true;
+    [SerializeField] private float lookSpeed = 0.420f;
     [SerializeField] private float maxRotX = 80;
     [SerializeField] private float minRotX = -80;
-    [SerializeField] private float lookSpeed = 0.420f;
+    [SerializeField] private float sensitivity = 2;
 
-    private float lookX, lookY;
     private Transform lookFrom, lookTo;
+    private float lookX, lookY;
     private Vector2 direction;
-    private float rotX = 0.0f, rotY = 0.0f;
-    private float rotZ = 0.0f;
+    private float rotX = 0.0f, rotY = 0.0f, rotZ = 0.0f;
 
     /**
      * Grab an instance of the camera which should be attached to this game object
@@ -82,10 +83,10 @@ public class CameraController : MonoBehaviour
 
         transform.localRotation = Quaternion.Euler(rotX, rotY, rotZ);
 
-        if(enablePlayerRotation)
+        if (enablePlayerRotation)
             player.transform.Rotate(Vector3.up * lookX);
 
-        // do this last
+        // update last
         transform.position = CameraPosition.position;
     }
 
