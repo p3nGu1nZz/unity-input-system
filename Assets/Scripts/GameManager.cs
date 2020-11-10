@@ -69,6 +69,12 @@ public class GameManager : MonoBehaviour
         gameManager = instance;
     }
 
+    private void Start()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+    }
+
     private void OnEnable()
     {
         pauseGameEvent.Start();
