@@ -13,16 +13,10 @@ using UnityEngine;
  */
 public class CameraLookTargetController : MonoBehaviour
 {
-    //public static CameraLookTargetController cameraTarget;
-    //private Camera cam_;
     private PlayerController player;
 
-    //[SerializeField] private Transform LookTarget;
-    //[SerializeField]
-    //[Tooltip("Disable transform rotation for quadruped players, and enable for FPS")]
-    //private bool enablePlayerRotation = true;
-    [SerializeField] private float sensitivity = 2;
-    //[SerializeField] private float speed = 0.420f;
+    [SerializeField] private float sensitivityX = 0.5f;
+    [SerializeField] private float sensitivityY = 0.25f;
     [SerializeField] private float maxRotX = 80;
     [SerializeField] private float minRotX = -80;
     [SerializeField] private float maxRotY = 80;
@@ -30,7 +24,7 @@ public class CameraLookTargetController : MonoBehaviour
 
     private Vector2 direction;
     private float lookX, lookY;
-    private float rotY = 0.0f, rotX = 0.0f, rotZ = 0.0f;
+    private float rotY = 0.0f, rotX = 0.0f;
 
     /**
      * Grab an instance of the camera which should be attached to this game object
@@ -51,12 +45,12 @@ public class CameraLookTargetController : MonoBehaviour
      * head which directs the rotational angle to move towards. Also check to see if we 
      * are paused, if not then look toward the mouse movement.
      */
-    private void LateUpdate()
+    private void Update()
     {
         if (GameManager.IsGamePaused) return;
 
         direction = player.Controls.Player.Look.ReadValue<Vector2>();
-        //this.MoveLookTarget(direction);
+        this.MoveLookTarget(direction);
     }
 
     /**
@@ -71,15 +65,20 @@ public class CameraLookTargetController : MonoBehaviour
      */
     public void MoveLookTarget(Vector3 direction)
     {
-        lookX = direction.x * sensitivity;
-        lookY = direction.y * sensitivity;
+        lookX = direction.x * sensitivityX;
+        lookY = direction.y * sensitivityY;
 
-        rotX += lookX;
-        rotX = Mathf.Clamp(rotX, minRotX, maxRotX);
+        //rotX += lookX;
+        //rotX = Mathf.Clamp(rotX, minRotX, maxRotX);
 
-        rotY -= lookY;
-        rotY = Mathf.Clamp(rotY, minRotY, maxRotY);
-        
-        transform.localRotation = Quaternion.Euler(rotY, rotX, rotZ);
+        //rotY -= lookY;
+        //rotY = Mathf.Clamp(rotY, minRotY, maxRotY);
+
+        //transform.localRotation = Quaternion.Euler(rotY, rotX, 0.0f);
+
+        Vector3 vY = new Vector3(player.transform.position.x, player.transform.position.y + 1, player.transform.position.z);
+
+        transform.RotateAround(player.transform.position, Vector3.up, lookX);
+        transform.RotateAround(vY, Vector3.right, -lookY);
     }
 }
