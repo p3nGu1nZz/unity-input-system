@@ -11,20 +11,15 @@ using UnityEngine;
  * 
  * <remarks>requires 'Camera' component to work; make sure one is included in scene</remarks>
  */
-public class CameraLookTargetController : MonoBehaviour
+public class LookTargetController : MonoBehaviour
 {
     private PlayerController player;
 
-    [SerializeField] private float sensitivityX = 0.5f;
-    [SerializeField] private float sensitivityY = 0.25f;
-    [SerializeField] private float maxRotX = 80;
-    [SerializeField] private float minRotX = -80;
-    [SerializeField] private float maxRotY = 80;
-    [SerializeField] private float minRotY = -80;
+    [SerializeField] private float sensitivityX = 1f;
+    [SerializeField] private float sensitivityY = 1f;
 
     private Vector2 direction;
     private float lookX, lookY;
-    private float rotY = 0.0f, rotX = 0.0f;
 
     /**
      * Grab an instance of the camera which should be attached to this game object
@@ -36,7 +31,7 @@ public class CameraLookTargetController : MonoBehaviour
 
         if (player == null)
             throw new System.NullReferenceException(
-                "The class 'PlayerController' is null in 'CameraLookTargetController'.");
+                "The class 'PlayerController' is null in 'LookTargetController'.");
     }
 
     /**
@@ -45,7 +40,7 @@ public class CameraLookTargetController : MonoBehaviour
      * head which directs the rotational angle to move towards. Also check to see if we 
      * are paused, if not then look toward the mouse movement.
      */
-    private void Update()
+    private void LateUpdate()
     {
         if (GameManager.IsGamePaused) return;
 
@@ -54,12 +49,11 @@ public class CameraLookTargetController : MonoBehaviour
     }
 
     /**
-     * Calculates the new direction for the player to look at. This is independent of 
-     * the player states. We assume that we always want the player to be looking around
-     * unless this state is disabled for a cut scene or something. Make sure to update
-     * the camera position last to reduce jitter.
-     * 
-     * TODO boolean toggle for allowing the camera to rotate the player -- for quadped
+     * Calculates the new direction for the player to look at. This is independent of the
+     * player. We calculate this value by placing a vector position into am invisible plane 
+     * directly infront of the player. We then use the input signal from  the player
+     * look controller input, or mouse. This will be used to translate the position of the
+     * look target.
      * 
      * <param name="direction">used internally to denote the vector look position</param>
      */
@@ -68,17 +62,10 @@ public class CameraLookTargetController : MonoBehaviour
         lookX = direction.x * sensitivityX;
         lookY = direction.y * sensitivityY;
 
-        //rotX += lookX;
-        //rotX = Mathf.Clamp(rotX, minRotX, maxRotX);
-
-        //rotY -= lookY;
-        //rotY = Mathf.Clamp(rotY, minRotY, maxRotY);
-
-        //transform.localRotation = Quaternion.Euler(rotY, rotX, 0.0f);
-
-        Vector3 vY = new Vector3(player.transform.position.x, player.transform.position.y + 1, player.transform.position.z);
-
-        transform.RotateAround(player.transform.position, Vector3.up, lookX);
-        transform.RotateAround(vY, Vector3.right, -lookY);
+        transform.Translate(new Vector3(
+            1f * lookX * Time.deltaTime,
+            1f * lookY * Time.deltaTime,
+            0f),
+            Space.Self);
     }
 }
