@@ -59,6 +59,8 @@ sysinfo.txt
 crashlytics-build.properties
 
 # OS Specific Thumbnail caches
-/**/.DS_store
+/**/.DS_Store
 /**/[Tt]humbs.db
+
+/_build.app
 
