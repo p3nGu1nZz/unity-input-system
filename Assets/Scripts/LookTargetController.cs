@@ -62,6 +62,8 @@ public class LookTargetController : MonoBehaviour
         lookX = direction.x * sensitivityX;
         lookY = direction.y * sensitivityY;
 
+        // TODO clamp axis values  to maximums
+
         transform.Translate(new Vector3(
             1f * lookX * Time.deltaTime,
             1f * lookY * Time.deltaTime,

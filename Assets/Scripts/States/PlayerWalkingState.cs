@@ -23,7 +23,7 @@ public class PlayerWalkingState : PlayerBaseState
         {
             player.Move(direction);
         }
-        else if (player.Rigidbody.velocity.magnitude == 0)
+        else if (player.RB.velocity.magnitude == 0)
         {
             player.TransitionToState(player.IdleState);
         }
