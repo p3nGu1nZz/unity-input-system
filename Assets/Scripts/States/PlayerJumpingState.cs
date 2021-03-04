@@ -10,6 +10,18 @@ public class PlayerJumpingState : PlayerBaseState
         player.Jump();
     }
 
+    public override void FixedUpdate(PlayerController player)
+    {
+    }
+
+    public override void Update(PlayerController player)
+    {
+    }
+
+    public override void LateUpdate(PlayerController player)
+    {
+    }
+
     public override void OnCollisionEnter(PlayerController player, Collision collision)
     {
         if (collision.gameObject.tag == "Floor")
@@ -22,13 +34,5 @@ public class PlayerJumpingState : PlayerBaseState
             Debug.Log("Landed On Landable");
             player.TransitionToState(player.IdleState);
         }
-    }
-
-    public override void FixedUpdate(PlayerController player)
-    {
-    }
-
-    public override void Update(PlayerController player)
-    {
     }
 }

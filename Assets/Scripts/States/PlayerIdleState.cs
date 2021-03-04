@@ -25,4 +25,9 @@ public class PlayerIdleState : PlayerBaseState
         if (player.Controls.Player.Jump.triggered)
             player.TransitionToState(player.JumpingState);
     }
+
+
+    public override void LateUpdate(PlayerController player)
+    {
+    }
 }

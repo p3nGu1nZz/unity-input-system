@@ -11,10 +11,6 @@ public class PlayerWalkingState : PlayerBaseState
         Debug.Log("Enter Walking State");
     }
 
-    public override void OnCollisionEnter(PlayerController player, Collision collision)
-    {
-    }
-
     public override void FixedUpdate(PlayerController player)
     {
         direction = player.Controls.Player.Move.ReadValue<Vector2>();
@@ -35,5 +31,13 @@ public class PlayerWalkingState : PlayerBaseState
         {
             player.TransitionToState(player.JumpingState);
         }
+    }
+
+    public override void LateUpdate(PlayerController player)
+    {
+    }
+
+    public override void OnCollisionEnter(PlayerController player, Collision collision)
+    {
     }
 }

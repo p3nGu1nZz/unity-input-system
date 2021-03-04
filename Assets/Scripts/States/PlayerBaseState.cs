@@ -10,5 +10,7 @@ public abstract class PlayerBaseState
 
     public abstract void FixedUpdate(PlayerController player);
 
+    public abstract void LateUpdate(PlayerController player);
+
     public abstract void OnCollisionEnter(PlayerController player, Collision collision);
 }

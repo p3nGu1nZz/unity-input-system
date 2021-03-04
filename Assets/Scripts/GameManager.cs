@@ -93,7 +93,7 @@ public class GameManager : MonoBehaviour
     /**
      * the check function that determines if we should pause the game or not
      */
-    void PauseGame()
+    private void PauseGame()
     {
         if (IsGamePaused)
         {
@@ -108,7 +108,7 @@ public class GameManager : MonoBehaviour
     /**
      * resumes the game and sets various game properties of this manager
      */
-    void GameResume()
+    private void GameResume()
     {
         Debug.Log("RESUME");
         isGamePaused = false;
@@ -123,7 +123,7 @@ public class GameManager : MonoBehaviour
      * your computer. This is a bit wonky inside the unity editor, but seems
      * to be fine in the release version
      */
-    void GamePause()
+    private void GamePause()
     {
         Debug.Log("PAUSE");
         isGamePaused = true;
